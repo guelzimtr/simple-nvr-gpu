@@ -36,6 +36,33 @@ class CameraStream {
         this.recordingWatcher = null;
 	this.deleteOldRecordingsProcess = null;
 	this.deleteEmptyFoldersProcess = null;
+
+	if(storage.hevc_vaapi){
+		this.log("HEVC VAAPI GPU encoding...");
+		this.args = [
+			            "-hide_banner",
+			            "-y", // overwrite files without asking
+			            "-loglevel", "error",
+			            "-rtsp_transport", "tcp",
+			            "-use_wallclock_as_timestamps", "1", // Fix the timestamps in the file not being correct
+			            "-hwaccel", "vaapi",
+			            "-i", this.url,
+			            "-c:v", "hevc_vaapi",
+			            "-vf","format=nv12,hwupload,scale_vaapi=640:-1",
+			            "-qp", "25",
+			            "-c:a", "copy",
+			            "-f", "segment",
+			            "-reset_timestamps", "1",
+			            "-segment_time", `${videoLengthSeconds}`,
+			            "-segment_format", "mkv",
+			            "-segment_atclocktime", "1",
+			            "-strftime", "1",
+			            `${path.join(this.rawStoragePath, "%Y-%m-%dT%H %M %S%z.mkv")}`
+			        ];
+
+	} else {
+		this.log("CPU x264 encoding...");
+
         this.args = [
             "-hide_banner",
             "-y", // overwrite files without asking
@@ -52,6 +79,7 @@ class CameraStream {
             "-strftime", "1",
             `${path.join(this.rawStoragePath, "%Y-%m-%dT%H %M %S%z.mkv")}`
         ];
+	}
 
         this.initTimeoutWatcher();
         this.initFileMover();

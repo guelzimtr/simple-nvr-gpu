@@ -1,5 +1,6 @@
 {
-    "rootpath": "/home/ubuntu/recordings",
-    "retentionPeriod": 7,
-    "localTimeFormat": true
+    "rootpath": "/home/tarik/tools/simple-nvr-gpu/recordings",
+    "retentionPeriod": 90,
+    "localTimeFormat": true,
+    "hevc_vaapi": true
 }
