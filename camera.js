@@ -46,9 +46,10 @@ class CameraStream {
 			            "-rtsp_transport", "tcp",
 			            "-use_wallclock_as_timestamps", "1", // Fix the timestamps in the file not being correct
 			            "-hwaccel", "vaapi",
+				    "-hwaccel_output_format", "vaapi",
 			            "-i", this.url,
 			            "-c:v", "hevc_vaapi",
-			            "-vf","format=nv12,hwupload,scale_vaapi=640:-1",
+			            "-vf","scale_vaapi=640:-1",
 			            "-qp", "25",
 			            "-c:a", "copy",
 			            "-f", "segment",
