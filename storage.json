@@ -1,6 +1,7 @@
 {
-    "rootpath": "/home/tarik/tools/simple-nvr-gpu/recordings",
-    "retentionPeriod": 90,
+    "rootpath": "/home/tarik/Documents/nvr_backup",
+    "retentionPeriod": 120,
     "localTimeFormat": true,
-    "hevc_vaapi": true
+    "hevc_vaapi": true,
+    "logfilePath":"/var/log"
 }

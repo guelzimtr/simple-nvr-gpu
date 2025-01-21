@@ -11,6 +11,9 @@ ENCRYPTED_FILE="$1"  # The encrypted file passed as a command line argument
 EXTRACT_ROOT="/home/tarik/Documents/nvr_archive_restore"
 LOG_FILE="$EXTRACT_ROOT/decrypt_log.txt"
 
+# create extract root folder
+mkdir -p $EXTRACT_ROOT
+
 # Function to log messages with timestamps
 log() {
     echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" | tee -a "$LOG_FILE"

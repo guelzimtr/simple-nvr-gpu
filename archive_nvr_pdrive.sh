@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Define the log file
-LOGFILE="/home/tarik/tools/simple-nvr-gpu/log/archive_nvr_upload_pdrive.log"
+LOGFOLDER="/home/tarik/tools/simple-nvr-gpu/log"
+LOGFILE="$LOGFOLDER/archive_nvr_upload_pdrive.log"
 
 # Define the directory to search
 SEARCH_DIR="/home/tarik/Documents/nvr_backup"
@@ -14,12 +15,15 @@ OUTPUT_DIR="/home/tarik/Documents/nvr_archive/to_cloud"
 OUTPUT_FILE="$OUTPUT_DIR/nvr_snapshot_$YESTERDAY_DATE.tar.bz2.gpg"
 
 # Define the lock file
-LOCK_FILE="/home/tarik/tools/simple-nvr-gpu/rclone_sync.lock"
+LOCK_FILE="$LOGFOLDER/rclone_sync.lock"
 
 # Redirect stdout and stderr to include timestamps
 exec > >(ts '[%Y-%m-%d %H:%M:%S]') 2>&1
 
 {
+    # make folder for log and lock file
+    mkdir -p "$LOGFOLDER"
+
     # Acquire a lock to prevent concurrent execution
     flock -n 200 || { echo "[$(date +'%Y-%m-%d %H:%M:%S')] Script is already running."; exit 1; }
 

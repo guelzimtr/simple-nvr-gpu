@@ -22,7 +22,9 @@ module.exports.initCameras = () => {
 
 class CameraStream {
     constructor(name, url) {
-        this.name = name;
+	
+	
+	this.name = name;
         this.log(`Initialising camera...`);
 
         this.url = url;
@@ -49,8 +51,7 @@ class CameraStream {
 				    "-hwaccel_output_format", "vaapi",
 			            "-i", this.url,
 			            "-c:v", "hevc_vaapi",
-			            "-vf","scale_vaapi=640:-1",
-			            "-qp", "25",
+			            "-qp", "30",
 			            "-c:a", "copy",
 			            "-f", "segment",
 			            "-reset_timestamps", "1",
@@ -86,7 +87,7 @@ class CameraStream {
         this.initFileMover();
         this.initCombinationCron();
         this.startRecording();
-        if(storage.retentionPeriod) this.initOldRecordingsCron();
+        //if(storage.retentionPeriod) this.initOldRecordingsCron();
         this.log(`Camera initialised`);
     }
 
@@ -135,14 +136,17 @@ class CameraStream {
                     storage.rootpath,
                     "-maxdepth", "5",
 		    "-name", "*.*",
-                    "-mtime", storage.retentionPeriod,
+                    "-mtime +", storage.retentionPeriod,
 		    "-delete"
                 ]
-                this.deleteOldRecordingsProcess = childProcess.spawn("find", deleteOldRecordingsArgs, {});
-		this.deleteEmptyFoldersProcess = childProcess.spawn("find", [storage.rootpath, "-type", "d", "-empty", "-delete"], {})
+		//this.deleteOldRecordingsProcess = childProcess.spawn("find", deleteOldRecordingsArgs, {});
+                //this.deleteEmptyFoldersProcess = childProcess.spawn("find", [storage.rootpath, "-type", "d", "-empty", "-delete"], {})
                 this.deleteOldRecordingsProcess.stdout.on('data', (data) => {
                     this.log('[STDOUT]', data.toString());
                 });
+		
+		const logfile = fs.createWriteStream('delete_old_recordings.log', { flags: 'a'});
+                deleteEmptyFoldersProcess.stdout.pipe(logfile);		
     
                 this.deleteOldRecordingsProcess.stderr.on('data', (data) => {
                     this.log('[STDERR]', data.toString());
