@@ -4,8 +4,8 @@
 SOURCE_DIR="/home/tarik/Documents/nvr_backup"          # Directory to search for files
 ARCHIVE_DIR="/home/tarik/Documents/nvr_archive"        # Directory to store the archived files
 LOG_FILE="/home/tarik/tools/simple-nvr-gpu/log/simple-nvr_archive.log"       # Log file path
-MODIFIED_DAYS="+120"                  # Files older than this many days will be archived
-RETENTION_DAYS="30"                   # Retain archived files for this many days
+MODIFIED_DAYS="+90"                  # Files older than this many days will be archived
+RETENTION_DAYS="15"                   # Retain archived files for this many days
 DRY_RUN=false                         # Dry-run mode (set to true for simulation)
 
 # Timestamp function for logging

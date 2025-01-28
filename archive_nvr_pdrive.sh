@@ -75,9 +75,23 @@ exec > >(ts '[%Y-%m-%d %H:%M:%S]') 2>&1
     # Check if OUTPUT_FILE exists before executing rclone
     if [ -f "$OUTPUT_FILE" ]; then
         echo "Starting copy from '$OUTPUT_FILE' to '$DESTINATION_REMOTE'..."
-        
-        rclone copy -vv  "$OUTPUT_FILE" "$DESTINATION_REMOTE" \
+       
+       #OUTPUT_FILE="/home/tarik/Documents/nvr_archive/to_cloud/nvr_snapshot_2025-01-24_131644.tar.bz2.gpg"	
+        rclone copy -vvv  "$OUTPUT_FILE" "$DESTINATION_REMOTE" \
             --protondrive-replace-existing-draft=true \
+	    --transfers 2 \
+	    --checkers 2 \
+	    --fast-list \
+	    --buffer-size 64M \
+	    --retries 5 \
+	    --low-level-retries 10 \
+	    --update \
+	    --tpslimit 1 \
+	    --tpslimit-burst 1 \
+	    --bwlimit 5M \
+	    --timeout 10m \
+	    --stats 20s \
+	    --log-file=$LOGFILE \
             --password-command="$CONF_PWD_CMD"
 
         if [ $? -eq 0 ]; then
